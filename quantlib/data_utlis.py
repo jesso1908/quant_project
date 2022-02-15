@@ -38,7 +38,7 @@ def get_binance_data():
 		# Convert unix to timestamp
 		bar_df['date'] = pd.to_datetime(bar_df['date'],unit='s')
 		bar_df.set_index('date', inplace=True)
-		bar_df = bar_df[['open', 'high', 'low','close','volume']].copy()
+		bar_df = bar_df[['open', 'high', 'low','close','volume']]
 		
 		bar_df['open'] = bar_df['open'].astype(float)
 		bar_df['high'] = bar_df['high'].astype(float)
@@ -60,7 +60,7 @@ def get_binance_data():
 		df[columns] = inst_df
 	return instruments,df
 def extend_dataframe(traded, df):
-    df.index = pd.Series(df.index).apply(lambda x: format_date(x))
+    # df.index = pd.Series(df.index).apply(lambda x: format_date(x))
     open_cols = list(map(lambda x: str(x) + " open", traded))
     high_cols = list(map(lambda x: str(x) + " high", traded))
     low_cols = list(map(lambda x: str(x) + " low", traded))
@@ -76,10 +76,10 @@ def extend_dataframe(traded, df):
         #test if stock is actively trading by using rough measure of non-zero price change from previous time step
         historical_data["{} active".format(inst)] = historical_data["{} close".format(inst)] != historical_data["{} close".format(inst)].shift(1)
     return historical_data
-def format_date(date):
-    #convert 2012-02-06 00:00:00 >> datetime.date(2012, 2, 6)
-    yymmdd = list(map(lambda x: int(float(x)), str(date).split(" ")[0].split("-")))
-    return datetime.date(yymmdd[0], yymmdd[1], yymmdd[2])
+# def format_date(date):
+#     #convert 2012-02-06 00:00:00 >> datetime.date(2012, 2, 6)
+#     yymmdd = list(map(lambda x: int(float(x)), str(date).split(" ")[0].split("-")))
+#     return datetime.date(yymmdd[0], yymmdd[1], yymmdd[2])
 
 # instruments,df = get_binance_data()
 # df = extend_dataframe(traded=instruments,df=df)
